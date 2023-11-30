@@ -42,7 +42,7 @@ const engine =
 
     const validateBarcode = async (event) => {
       setValidating(true);
-      
+
       formik.setFieldValue("barcode", "");
       formik.setFieldValue("barcodeType", "");
 
@@ -68,7 +68,6 @@ const engine =
       }
     };
 
-    console.log("🚀 ~ file: engine.js:59 ~ data:", data);
     return (
       <Component
         {...props}
