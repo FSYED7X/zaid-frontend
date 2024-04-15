@@ -1,12 +1,9 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from "./pages/Login";
-import Admin from "./pages/Admin";
-import axios from "axios";
+import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "react-query";
-
-// axios.defaults.baseURL = process.env.REACT_APP_API_ENDPOINT;
-// axios.defaults.headers.post["Content-Type"] = "application/json";
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Layout from "./Layout";
+import Add from "./pages/Add";
+import Products from "./pages/Products";
 
 const queryClient = new QueryClient();
 
@@ -14,10 +11,13 @@ function App() {
   return (
     <div className="App">
       <QueryClientProvider client={queryClient}>
+        <Toaster position="bottom-left" />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="admin" element={<Admin />} />
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Products />} />
+              <Route path="add" element={<Add />} />
+            </Route>
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>

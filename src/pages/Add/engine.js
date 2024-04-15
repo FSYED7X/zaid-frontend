@@ -2,19 +2,16 @@ import axios from "axios";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-import { useQuery } from "react-query";
+import { useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 const engine =
   (Component) =>
   ({ ...props }) => {
     const [validating, setValidating] = useState(false);
-
-    const {
-      isLoading,
-      data: { data = {} } = {},
-      refetch,
-    } = useQuery("products", () => axios(process.env.REACT_APP_LAMBDA_URL));
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
 
     const formik = useFormik({
       initialValues: { barcode: "", barcodeType: "", price: "" },
@@ -30,8 +27,9 @@ const engine =
             method: "POST",
           });
           toast.success("Product added successfully.");
-          refetch();
+          queryClient.invalidateQueries({ queryKey: ["products"] });
           resetForm();
+          navigate("/");
         } catch (error) {
           toast.success("Error occured!.");
         } finally {
@@ -76,8 +74,6 @@ const engine =
           validateBarcode,
           validating,
           setValidating,
-          data,
-          isLoading,
         }}
       />
     );
